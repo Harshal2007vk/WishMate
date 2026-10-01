@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WishMate — Never Miss a Reason to Celebrate</title>
+    <meta name="description" content="WishMate is your personal celebration assistant. Remember birthdays, anniversaries & occasions. Plan gifts. Never be caught off guard again.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <header class="navbar" id="navbar">
+        <div class="nav-inner">
+            <div class="brand" id="homeBtn" role="button" tabindex="0" aria-label="WishMate Home">
+                <span class="brand-icon">🎊</span>
+                <span class="brand-text">WishMate</span>
+            </div>
+
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-view="dashboard" id="navDashboard">Dashboard</button>
+                <button class="nav-tab" data-view="occasions" id="navOccasions">Occasions</button>
+                <button class="nav-tab" data-view="budget" id="navBudget">Budget Planner</button>
+            </div>
+
+            <div class="nav-actions">
+                <div class="search-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search people…" autocomplete="off" aria-label="Search occasions">
+                </div>
+                <button class="btn-primary" id="addOccasionBtn" aria-label="Add new occasion">
+                    <span>＋</span> Add Occasion
+                </button>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- ── MAIN ── -->
+    <main class="app-main">
+
+        <!-- ════ DASHBOARD VIEW ════ -->
+        <section id="viewDashboard" class="view active">
+
+            <!-- Hero -->
+            <div class="dash-hero">
+                <div class="dash-hero-text">
+                    <h1 id="heroGreeting">Good morning! 👋</h1>
+                    <p id="heroDate">Thursday, 01 October 2026</p>
+                </div>
+                <div class="dash-hero-tagline">
+                    <span>Never remember a birthday.<br>Just celebrate it.</span>
+                </div>
+            </div>
+
+            <!-- TODAY BANNER -->
+            <div id="todayBanner" class="today-banner hidden"></div>
+
+            <!-- STAT CARDS -->
+            <div class="stat-row">
+                <div class="stat-card stat-purple">
+                    <div class="stat-icon">🎈</div>
+                    <div class="stat-body">
+                        <div class="stat-label">Total People</div>
+                        <div class="stat-value" id="statTotal">0</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-pink">
+                    <div class="stat-icon">🎉</div>
+                    <div class="stat-body">
+                        <div class="stat-label">Today</div>
+                        <div class="stat-value" id="statToday">0</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-amber">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-body">
+                        <div class="stat-label">This Month</div>
+                        <div class="stat-value" id="statMonth">0</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-green">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-body">
+                        <div class="stat-label">Monthly Budget</div>
+                        <div class="stat-value" id="statMonthBudget">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPCOMING + GIFT PANEL -->
+            <div class="dash-grid">
+
+                <!-- Upcoming Occasions -->
+                <div class="panel">
+                    <div class="panel-head">
+                        <h2 class="panel-title">📅 Upcoming</h2>
+                        <button class="link-btn" id="viewAllBtn">View all →</button>
+                    </div>
+                    <div id="upcomingList" class="upcoming-list">
+                        <div class="empty-mini">No occasions yet. Add one! 🎊</div>
+                    </div>
+                </div>
+
+                <!-- Budget snapshot -->
+                <div class="panel">
+                    <div class="panel-head">
+                        <h2 class="panel-title">💰 Gift Money</h2>
+                        <span class="panel-meta" id="budgetMonthLabel">This Month</span>
+                    </div>
+                    <div class="budget-snapshot">
+                        <div class="budget-row">
+                            <span>🎁 Planned gifts</span>
+                            <strong id="snapPlanned">₹0</strong>
+                        </div>
+                        <div class="budget-row">
+                            <span>✅ Already spent</span>
+                            <strong id="snapSpent">₹0</strong>
+                        </div>
+                        <div class="budget-row budget-remaining">
+                            <span>🟢 Remaining</span>
+                            <strong id="snapRemaining">₹0</strong>
+                        </div>
+                        <div class="budget-bar-wrap">
+                            <div class="budget-bar-fill" id="budgetBarFill" style="width:0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="panel-sep"></div>
+
+                    <div class="panel-head">
+                        <h2 class="panel-title">🗓️ Annual Estimate</h2>
+                    </div>
+                    <div class="annual-estimate">
+                        <div class="annual-value" id="annualEstimate">₹0</div>
+                        <div class="annual-label">estimated yearly spending</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ════ OCCASIONS VIEW ════ -->
+        <section id="viewOccasions" class="view">
+
+            <div class="occasions-header">
+                <div>
+                    <h2 class="view-title">All Occasions</h2>
+                    <p class="view-sub" id="occasionsSubtext">Sorted by nearest date</p>
+                </div>
+                <div class="filter-row">
+                    <button class="filter-chip active" data-filter="all">All</button>
+                    <button class="filter-chip" data-filter="birthday">🎂 Birthdays</button>
+                    <button class="filter-chip" data-filter="anniversary">💍 Anniversaries</button>
+                    <button class="filter-chip" data-filter="today">✨ Today</button>
+                    <button class="filter-chip" data-filter="week">This Week</button>
+                    <button class="filter-chip" data-filter="month">This Month</button>
+                </div>
+            </div>
+
+            <!-- Occasion Cards Grid -->
+            <div id="occasionGrid" class="occasion-grid"></div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state hidden">
+                <div class="empty-emoji">🎊</div>
+                <h3>No occasions yet</h3>
+                <p>Add your first person to start celebrating every important moment.</p>
+                <button class="btn-primary" id="emptyAddBtn">＋ Add First Occasion</button>
+            </div>
+
+        </section>
+
+
+        <!-- ════ BUDGET VIEW ════ -->
+        <section id="viewBudget" class="view">
+
+            <div class="occasions-header">
+                <div>
+                    <h2 class="view-title">💰 Budget Planner</h2>
+                    <p class="view-sub">Plan &amp; track your celebration spending</p>
+                </div>
+            </div>
+
+            <div class="budget-grid">
+
+                <div class="panel span-2">
+                    <div class="panel-head">
+                        <h2 class="panel-title">📆 Monthly Breakdown — 2026</h2>
+                        <div class="annual-badge" id="annualBadge">Yearly: ₹0</div>
+                    </div>
+                    <div id="monthlyBreakdown" class="monthly-breakdown"></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head">
+                        <h2 class="panel-title">🏆 Top Spends</h2>
+                    </div>
+                    <div id="topSpends" class="top-spends"></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head">
+                        <h2 class="panel-title">📊 By Relationship</h2>
+                    </div>
+                    <div id="byRelationship" class="by-relationship"></div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- ── ADD / EDIT MODAL ── -->
+    <div id="occasionModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+        <div class="modal-box">
+
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalHeading">Add Occasion</h2>
+                <button class="modal-close" id="modalClose" aria-label="Close modal">✕</button>
+            </div>
+
+            <form id="occasionForm" class="modal-form" novalidate>
+                <input type="hidden" id="editId">
+
+                <!-- Row 1: Name + Relationship -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fieldName">Name *</label>
+                        <input type="text" id="fieldName" placeholder="e.g. Rahul Sharma" autocomplete="off">
+                        <span class="field-error" id="errName"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="fieldRelationship">Relationship</label>
+                        <select id="fieldRelationship">
+                            <option value="Friend">👫 Friend</option>
+                            <option value="Best Friend">💛 Best Friend</option>
+                            <option value="Family">👨‍👩‍👧 Family</option>
+                            <option value="Partner">❤️ Partner</option>
+                            <option value="Colleague">💼 Colleague</option>
+                            <option value="Other">✨ Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Occasion type -->
+                <div class="form-group">
+                    <label>Occasion Type *</label>
+                    <div class="occasion-type-grid" id="occasionTypeGrid">
+                        <label class="type-chip">
+                            <input type="radio" name="occasionType" value="birthday" checked>
+                            <span>🎂 Birthday</span>
+                        </label>
+                        <label class="type-chip">
+                            <input type="radio" name="occasionType" value="anniversary">
+                            <span>💍 Anniversary</span>
+                        </label>
+                        <label class="type-chip">
+                            <input type="radio" name="occasionType" value="graduation">
+                            <span>🎓 Graduation</span>
+                        </label>
+                        <label class="type-chip">
+                            <input type="radio" name="occasionType" value="work-anniversary">
+                            <span>💼 Work Anniv.</span>
+                        </label>
+                        <label class="type-chip">
+                            <input type="radio" name="occasionType" value="baby-shower">
+                            <span>👶 Baby Shower</span>
+                        </label>
+                        <label class="type-chip">
+                            <input type="radio" name="occasionType" value="housewarming">
+                            <span>🏠 Housewarming</span>
+                        </label>
+                        <label class="type-chip">
+                            <input type="radio" name="occasionType" value="custom">
+                            <span>🎉 Custom</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Row 2: Date + Importance -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fieldDate">Date *</label>
+                        <input type="date" id="fieldDate">
+                        <span class="field-hint">Enter the original date (e.g. birth year) to calculate age/anniversary years.</span>
+                        <span class="field-error" id="errDate"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="fieldImportance">Importance</label>
+                        <select id="fieldImportance">
+                            <option value="normal">Normal</option>
+                            <option value="important">⭐ Important</option>
+                            <option value="vip">👑 VIP</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Row 3: Budget + Location -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fieldBudget">Gift Budget (₹)</label>
+                        <input type="number" id="fieldBudget" placeholder="1500" min="0">
+                        <span class="field-error" id="errBudget"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="fieldLocation">Location (optional)</label>
+                        <input type="text" id="fieldLocation" placeholder="e.g. Mumbai" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="form-group">
+                    <label for="fieldNotes">Notes</label>
+                    <textarea id="fieldNotes" placeholder="Favourite color, hobbies, sizes…" rows="2"></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" id="formCancel">Cancel</button>
+                    <button type="submit" class="btn-primary" id="formSave">Save Occasion</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ── GIFT PLAN MODAL ── -->
+    <div id="giftModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="giftModalHeading">
+        <div class="modal-box modal-gift">
+            <div class="modal-header">
+                <h2 class="modal-title" id="giftModalHeading">🎁 Gift Plan</h2>
+                <button class="modal-close" id="giftModalClose" aria-label="Close gift modal">✕</button>
+            </div>
+            <div id="giftModalBody" class="gift-modal-body"></div>
+        </div>
+    </div>
+
+
+    <!-- ── MESSAGE MODAL ── -->
+    <div id="messageModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="msgModalHeading">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 class="modal-title" id="msgModalHeading">💌 Write a Message</h2>
+                <button class="modal-close" id="messageModalClose" aria-label="Close message modal">✕</button>
+            </div>
+            <div id="messageModalBody" class="message-modal-body"></div>
+        </div>
+    </div>
+
+
+    <!-- ── TOAST ── -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
